@@ -27,6 +27,7 @@ class VehicleList : Fragment(), MyAdapter.OnItemClickListener {
     private lateinit var viewModel: MainViewModel
     private lateinit var fragmentMainBinding: FragmentVehicleListBinding
     private lateinit var mAdapter: MyAdapter
+    private var searchValue = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +52,7 @@ class VehicleList : Fragment(), MyAdapter.OnItemClickListener {
             showError(it)
         }
         handleClickOnButton()
+        refreshItems()
 
     }
 
@@ -65,13 +67,23 @@ class VehicleList : Fragment(), MyAdapter.OnItemClickListener {
         fragmentMainBinding.searchButton.setOnClickListener {
             var inputText = fragmentMainBinding.searchEdittext.text.toString()
             if (inputText.isNotEmpty()) {
-                fragmentMainBinding.progressCircular.show()
-                hideSoftKeyboard()
-                activity?.window?.setFlags(
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-                );
-                getData(inputText.toInt())
+                searchValue = inputText.toInt()
+                if (searchValue in 0..100) {
+                    activity?.window?.setFlags(
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                    );
+                    fragmentMainBinding.progressCircular.show()
+                    hideSoftKeyboard()
+                    getData(searchValue)
+
+                } else {
+                    fragmentMainBinding.searchEdittext.error =
+                        getString(R.string.valid_number_error)
+                }
+            } else {
+                fragmentMainBinding.searchEdittext.error =
+                    getString(R.string.empty_error)
             }
         }
     }
@@ -89,6 +101,16 @@ class VehicleList : Fragment(), MyAdapter.OnItemClickListener {
         mAdapter = MyAdapter(mList, this)
         fragmentMainBinding.recyclerview.layoutManager = LinearLayoutManager(activity)
         fragmentMainBinding.recyclerview.adapter = mAdapter
+    }
+
+    //refreshing list on swipe to down
+    private fun refreshItems() {
+        fragmentMainBinding.swipeRefresh.setOnRefreshListener {
+            // if (searchValue > 0) {
+            getData(searchValue)
+            fragmentMainBinding.swipeRefresh.isRefreshing = false
+            // }
+        }
     }
 
 

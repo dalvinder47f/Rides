@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="adapter_margin_left">5dp</dimen>
+    <dimen name="card_view_radius">5dp</dimen>
+    <dimen name="card_view_elevation">4dp</dimen>
+    <dimen name="textsize">18sp</dimen>
+    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="margin">5dp</dimen>
+    <dimen name="radius">5dp</dimen>
+    <dimen name="margin_ten">10dp</dimen>
+</resources>

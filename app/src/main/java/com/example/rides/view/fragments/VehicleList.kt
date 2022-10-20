@@ -56,8 +56,8 @@ class VehicleList : Fragment(), MyAdapter.OnItemClickListener {
 
 
     //making network call for retrieve data
-    private fun getData(name: Int) {
-        viewModel.getData(name)
+    private fun getData(value: Int) {
+        viewModel.getData(value)
     }
 
     //handle click on button
